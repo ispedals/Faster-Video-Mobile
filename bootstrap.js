@@ -4,121 +4,166 @@ const Cu = Components.utils;
 
 Cu.import("resource://gre/modules/Services.jsm");
 
-function showToast(aWindow, message) { aWindow.NativeWindow.toast.show(message, "short"); }
+function showToast(aWindow, message) {
+	aWindow.NativeWindow.toast.show(message, "short");
+}
 
-var gNormalMenuId = null;
-var gPlusOneMenuId = null;
-var gPlusHalfMenuId = null;
-var gMinusOneMenuId = null;
-var gMinusHalfMenuId = null;
-
+var parentID = null;
+var maxID = null;
 
 function loadIntoWindow(window) {
 	if (!window)
 		return;
 
+	var getPlayingVideos = function (document) {
+		var videos = Array.prototype.slice.call(document.getElementsByTagName('video'));
+
+		var iFrames = document.getElementsByTagName('iframe');
+		if (iFrames.length > 0) {
+			for (var i = 0; i < iFrames.length; i++) {
+				videos.concat(Array.prototype.slice.call(iFrame.contentDocument.getElementsByTagName('video')));
+			}
+		}
+		return videos.filter(function (video) {
+			return !video.paused;
+		});
+	};
+
+
 	var aWindow = window;
 
-	gNormalMenuId = window.NativeWindow.menu.add("1X", null, function() { 
-		var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;		
-		var iFrame=document.querySelector('iframe');
-		var video =null;
-		if(iFrame) {
-		    video = iFrame.contentDocument.querySelector('video');
-		}
-		if(!video) {
-		    video = document.querySelector('video');
-		}
-		if(video) {
-		    video.playbackRate = 1.0;
-			showToast(aWindow, video.playbackRate + "X");
-		}
-		else {
-			showToast(aWindow, "No video element");
-		}
+	parentID = window.NativeWindow.menu.add({
+		name: "Video Speed",
+		icon: null
 	});
-	gPlusOneMenuId = window.NativeWindow.menu.add("1+", null, function() { 
-		var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;		
-		var iFrame=document.querySelector('iframe');
-		var video =null;
-		if(iFrame) {
-		    video = iFrame.contentDocument.querySelector('video');
-		}
-		if(!video) {
-		    video = document.querySelector('video');
-		}
-		if(video) {
-		    video.playbackRate += 1.0;
-			showToast(aWindow, video.playbackRate + "X");
-		}
-		else {
-			showToast(aWindow, "No video element");
-		}
+
+	window.NativeWindow.menu.add({
+		name: "Max",
+		icon: null,
+		callback: function () {
+			var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;
+			var videos = getPlayingVideos(document);
+			if (videos.length === 0) {
+				showToast(aWindow, "No playing video");
+				return;
+			}
+			if (videos.length > 1) {
+				showToast(aWindow, "More than one playing video");
+				return;
+			}
+			videos[0].playbackRate = 5.0; //seems to be max
+			showToast(aWindow, videos[0].playbackRate + "X");
+		},
+		parent: parentID
 	});
-	gPlusHalfMenuId = window.NativeWindow.menu.add("0.5+", null, function() { 
-		var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;		
-		var iFrame=document.querySelector('iframe');
-		var video =null;
-		if(iFrame) {
-		    video = iFrame.contentDocument.querySelector('video');
-		}
-		if(!video) {
-		    video = document.querySelector('video');
-		}
-		if(video) {
-		    video.playbackRate += 0.5;
-			showToast(aWindow, video.playbackRate + "X");
-		}
-		else {
-			showToast(aWindow, "No video element");
-		}
+
+	window.NativeWindow.menu.add({
+		name: "1+",
+		icon: null,
+		callback: function () {
+			var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;
+			var videos = getPlayingVideos(document);
+			if (videos.length === 0) {
+				showToast(aWindow, "No playing video");
+				return;
+			}
+			if (videos.length > 1) {
+				showToast(aWindow, "More than one playing video");
+				return;
+			}
+			videos[0].playbackRate += 1.0;
+			showToast(aWindow, videos[0].playbackRate + "X");
+		},
+		parent: parentID
 	});
-	gMinusOneMenuId = window.NativeWindow.menu.add("1-", null, function() { 
-		var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;		
-		var iFrame=document.querySelector('iframe');
-		var video =null;
-		if(iFrame) {
-		    video = iFrame.contentDocument.querySelector('video');
-		}
-		if(!video) {
-		    video = document.querySelector('video');
-		}
-		if(video) {
-		    video.playbackRate -= 1.0;
-			showToast(aWindow, video.playbackRate + "X");
-		}
-		else {
-			showToast(aWindow, "No video element");
-		}
+
+	window.NativeWindow.menu.add({
+		name: "0.25+",
+		icon: null,
+		callback: function () {
+			var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;
+			var videos = getPlayingVideos(document);
+			if (videos.length === 0) {
+				showToast(aWindow, "No playing video");
+				return;
+			}
+			if (videos.length > 1) {
+				showToast(aWindow, "More than one playing video");
+				return;
+			}
+			videos[0].playbackRate += 0.25;
+			showToast(aWindow, videos[0].playbackRate + "X");
+		},
+		parent: parentID
 	});
-	gMinusHalfMenuId = window.NativeWindow.menu.add("0.5-", null, function() { 
-		var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;		
-		var iFrame=document.querySelector('iframe');
-		var video =null;
-		if(iFrame) {
-		    video = iFrame.contentDocument.querySelector('video');
-		}
-		if(!video) {
-		    video = document.querySelector('video');
-		}
-		if(video) {
-		    video.playbackRate -= 0.5;
-			showToast(aWindow, video.playbackRate + "X");
-		}
-		else {
-			showToast(aWindow, "No video element");
-		}
+
+	window.NativeWindow.menu.add({
+		name: "1X",
+		icon: null,
+		callback: function () {
+			var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;
+			var videos = getPlayingVideos(document);
+			if (videos.length === 0) {
+				showToast(aWindow, "No playing video");
+				return;
+			}
+			if (videos.length > 1) {
+				showToast(aWindow, "More than one playing video");
+				return;
+			}
+			videos[0].playbackRate = 1.0;
+			showToast(aWindow, videos[0].playbackRate + "X");
+		},
+		parent: parentID
 	});
+
+	window.NativeWindow.menu.add({
+		name: "0.25-",
+		icon: null,
+		callback: function () {
+			var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;
+			var videos = getPlayingVideos(document);
+			if (videos.length === 0) {
+				showToast(aWindow, "No playing video");
+				return;
+			}
+			if (videos.length > 1) {
+				showToast(aWindow, "More than one playing video");
+				return;
+			}
+			videos[0].playbackRate -= 0.25;
+			showToast(aWindow, videos[0].playbackRate + "X");
+		},
+		parent: parentID
+	});
+
+	window.NativeWindow.menu.add({
+		name: "1-",
+		icon: null,
+		callback: function () {
+			var document = aWindow.BrowserApp.selectedBrowser.contentWindow.document;
+			var videos = getPlayingVideos(document);
+			if (videos.length === 0) {
+				showToast(aWindow, "No playing video");
+				return;
+			}
+			if (videos.length > 1) {
+				showToast(aWindow, "More than one playing video");
+				return;
+			}
+			videos[0].playbackRate -= 1.0;
+			showToast(aWindow, videos[0].playbackRate + "X");
+		},
+		parent: parentID
+	});
+
 }
 
 function unloadFromWindow(window) {
 	if (!window)
 		return;
 
-	window.NativeWindow.menu.remove(gNormalMenuId);
-	window.NativeWindow.menu.remove(gPlusHalfMenuId);
-	window.NativeWindow.menu.remove(gMinusOneMenuId);
-	window.NativeWindow.menu.remove(gMinusHalfMenuId);
+	window.NativeWindow.menu.remove(parentID);
 }
 
 
@@ -126,48 +171,45 @@ function unloadFromWindow(window) {
  * bootstrap.js API from developer.mozilla.org/en-US/docs/Extensions/Mobile/Initialization_and_Cleanup
  */
 var windowListener = {
-  onOpenWindow: function(aWindow) {
-    // Wait for the window to finish loading
-    let domWindow = aWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindowInternal || Ci.nsIDOMWindow);
-    domWindow.addEventListener("load", function() {
-      domWindow.removeEventListener("load", arguments.callee, false);
-      loadIntoWindow(domWindow);
-    }, false);
-  },
+	onOpenWindow: function (aWindow) {
+		// Wait for the window to finish loading
+		let domWindow = aWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindowInternal || Ci
+			.nsIDOMWindow);
+		domWindow.addEventListener("load", function () {
+			domWindow.removeEventListener("load", arguments.callee, false);
+			loadIntoWindow(domWindow);
+		}, false);
+	},
 
-  onCloseWindow: function(aWindow) {
-  },
+	onCloseWindow: function (aWindow) {},
 
-  onWindowTitleChange: function(aWindow, aTitle) {
-  }
+	onWindowTitleChange: function (aWindow, aTitle) {}
 };
 
 function startup(aData, aReason) {
-  // Load into any existing windows
-  let windows = Services.wm.getEnumerator("navigator:browser");
-  while (windows.hasMoreElements()) {
-    let domWindow = windows.getNext().QueryInterface(Ci.nsIDOMWindow);
-    loadIntoWindow(domWindow);
-  }
+	// Load into any existing windows
+	let windows = Services.wm.getEnumerator("navigator:browser");
+	while (windows.hasMoreElements()) {
+		let domWindow = windows.getNext().QueryInterface(Ci.nsIDOMWindow);
+		loadIntoWindow(domWindow);
+	}
 
-  // Load into any new windows
-  Services.wm.addListener(windowListener);
+	// Load into any new windows
+	Services.wm.addListener(windowListener);
 }
 
 function shutdown(aData, aReason) {
-  // Stop listening for new windows
-  Services.wm.removeListener(windowListener);
+	// Stop listening for new windows
+	Services.wm.removeListener(windowListener);
 
-  // Unload from any existing windows
-  let windows = Services.wm.getEnumerator("navigator:browser");
-  while (windows.hasMoreElements()) {
-    let domWindow = windows.getNext().QueryInterface(Ci.nsIDOMWindow);
-    unloadFromWindow(domWindow);
-  }
+	// Unload from any existing windows
+	let windows = Services.wm.getEnumerator("navigator:browser");
+	while (windows.hasMoreElements()) {
+		let domWindow = windows.getNext().QueryInterface(Ci.nsIDOMWindow);
+		unloadFromWindow(domWindow);
+	}
 }
 
-function install(aData, aReason) {
-}
+function install(aData, aReason) {}
 
-function uninstall(aData, aReason) {
-}
+function uninstall(aData, aReason) {}

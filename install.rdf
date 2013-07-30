@@ -5,9 +5,9 @@
 		<em:id>Faster.Video@nowhere.us</em:id>
 		<em:type>2</em:type>
 		<em:name>Faster Video</em:name>
-		<em:version>1.0</em:version>
+		<em:version>2.0</em:version>
 		<em:bootstrap>true</em:bootstrap>
-		<em:description>Faster Video</em:description>
+		<em:description>Allows manipulation of the playback rate of HTML5 videos</em:description>
 		<em:creator>is pedals</em:creator>
 		<em:unpack>true</em:unpack>
 
