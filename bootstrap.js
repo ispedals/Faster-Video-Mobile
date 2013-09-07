@@ -21,7 +21,7 @@ function loadIntoWindow(window) {
 		var iFrames = document.getElementsByTagName('iframe');
 		if (iFrames.length > 0) {
 			for (var i = 0; i < iFrames.length; i++) {
-				videos.concat(Array.prototype.slice.call(iFrame.contentDocument.getElementsByTagName('video')));
+				videos = videos.concat(Array.prototype.slice.call(iFrames[i].contentDocument.getElementsByTagName('video')));
 			}
 		}
 		return videos.filter(function (video) {
