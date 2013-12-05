@@ -9,6 +9,7 @@ Requires at least Firefox for Android 20.0.
 
 ##License
 Faster Video Mobile is licensed under the MIT License, Copyright (c) 2013 ispedals
+The icons are from Ionicons (http://ionicons.com/), which are under the MIT License.
 
 ##See also
 * Faster Video
