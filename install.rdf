@@ -2,14 +2,13 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>Faster.Video@nowhere.us</em:id>
+		<em:id>Faster.Video.Mobile@nowhere.us</em:id>
 		<em:type>2</em:type>
-		<em:name>Faster Video</em:name>
-		<em:version>2.0</em:version>
+		<em:name>Faster Video Mobile</em:name>
+		<em:version>1.0</em:version>
 		<em:bootstrap>true</em:bootstrap>
 		<em:description>Allows manipulation of the playback rate of HTML5 videos</em:description>
-		<em:creator>is pedals</em:creator>
-		<em:unpack>true</em:unpack>
+		<em:creator>ispedals</em:creator>
 
 		<!-- Mobile -->
 		<em:targetApplication>
