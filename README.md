@@ -15,4 +15,9 @@ Faster Video Mobile is licensed under the MIT License, Copyright (c) 2013 ispeda
 The icons are from Ionicons (http://ionicons.com/), which are under the MIT License.
 
 ##See also
+* [Enable Youtube Player Mobile](https://addons.mozilla.org/en-US/firefox/addon/enable-youtube-player-mobile/) ([Github Link](https://github.com/ispedals/Enable-Youtube-Player-Mobile))
+
+  Enables the HTML5 player for Firefox for Android. Use in conjunction with this addon to control the video speed
 * [Faster Video](https://addons.mozilla.org/en-US/firefox/addon/faster-video/) ([Github Link](https://github.com/ispedals/Faster-Video))
+
+  Analogous verison for Firefox for Desktop
