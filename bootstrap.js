@@ -39,12 +39,14 @@ function getPlayingVideos(document) {
 function makeDynamicPlaybackRateFunction(playbackRate) {
   return function (video) {
     video.playbackRate += playbackRate;
+    video.defaultPlaybackRate = video.playbackRate;
   };
 }
 
 function makeFixedPlaybackRateFunction(playbackRate) {
   return function (video) {
     video.playbackRate = playbackRate;
+    video.defaultPlaybackRate = video.playbackRate;
   };
 }
 
