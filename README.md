@@ -9,6 +9,10 @@ If there is more than one video playing or if the video is paused, the playback 
 
 Requires at least Firefox for Android 20.0.
 
+##Changelog
+* 1.1
+  * Don't reset rate when changing video (by Simon Thorpe)
+
 ##License
 Faster Video Mobile is licensed under the MIT License, Copyright (c) 2013 ispedals
 
