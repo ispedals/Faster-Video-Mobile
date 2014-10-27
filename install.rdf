@@ -9,6 +9,7 @@
 		<em:bootstrap>true</em:bootstrap>
 		<em:description>Allows manipulation of the playback rate of HTML5 videos</em:description>
 		<em:creator>ispedals</em:creator>
+		<em:contributor>Simon Thorpe</em:contributor>
 		<em:homepageURL>https://github.com/ispedals/Faster-Video-Mobile</em:homepageURL>
 
 		<!-- Mobile -->
